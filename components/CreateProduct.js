@@ -3,6 +3,7 @@ import gql from 'graphql-tag'
 import useForm from '../lib/useForm'
 import Form from './styles/Form'
 import DisplayError from './ErrorMessage'
+import { ALL_PRODUCTS_QUERY } from './Products'
 
 const CREATE_PRODUCT_MUTATION = gql`
   mutation CREATE_PRODUCT_MUTATION(
@@ -40,6 +41,7 @@ export default function CreateProduct() {
     CREATE_PRODUCT_MUTATION,
     {
       variables: inputs,
+      refetchQueries: [{ query: ALL_PRODUCTS_QUERY }],
     }
   )
 
@@ -47,6 +49,7 @@ export default function CreateProduct() {
     <Form
       onSubmit={async (e) => {
         e.preventDefault()
+        console.log(inputs)
         await createProduct()
         clearForm()
       }}
@@ -89,9 +92,8 @@ export default function CreateProduct() {
           Description
           <textarea
             id="description"
-            name="descrition"
+            name="description"
             placeholder="Description"
-            value={inputs.description}
             onChange={handleChange}
           />
         </label>
